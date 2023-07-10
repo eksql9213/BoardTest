@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace = "com.test.board">
+	<select id="totalListCnt" resultType="int">
+		select count(*) from board
+	</select>
+	
+	<select id="selectListAll" resultType="BoardDto">
+		select bno, title, writer, view_cnt, reg_date
+			from board
+			order by bno DESC, reg_date DESC
+	</select>
+	
+	<select id="selectList" parameterType="PagingDto" resultType="BoardDto">
+		select bno, title, writer, view_cnt, reg_date
+			from board
+			order by bno DESC, reg_date DESC
+			<choose>
+				<when test="pageNum==1">
+					limit 0, #{listSize}
+				</when>
+				<otherwise>
+					limit #{rowNum}, #{listSize}
+				</otherwise>
+			</choose>
+	</select>
+	
+	<select id="select" parameterType="int" resultType="BoardDto">
+		select bno, title, content, writer, view_cnt, reg_date, up_date
+			from board
+			where bno = #{bno}
+	</select>
+	
+	<insert id="insert" parameterType="BoardDto">
+		insert into board (title, content, writer)
+			values (#{title}, #{content}, #{writer})
+	</insert>
+	
+	<update id="update" parameterType="BoardDto">
+		update board
+			set title = #{title}, content = #{content}, up_date = now()
+			where bno = #{bno}
+	</update>
+	
+	<update id="viewCnt" parameterType="BoardDto">
+		update board
+			set view_cnt = view_cnt + 1
+			where bno = #{bno}
+	</update>
+	
+	<delete id="deleteAll">
+		delete from board
+	</delete>
+	
+	<delete id="delete">
+		delete from board
+			where bno = #{bno}
+	</delete>
+</mapper>
