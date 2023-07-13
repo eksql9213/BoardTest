@@ -3,33 +3,26 @@
 		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
-<mapper namespace = "com.test.board">
+<mapper namespace = "com.test.board.dao">
 	<select id="totalListCnt" resultType="int">
 		select count(*) from board
 	</select>
 	
 	<select id="selectListAll" resultType="BoardDto">
-		select bno, title, writer, view_cnt, reg_date
+		select bno, title, writer, view_cnt, comment_cnt, reg_date
 			from board
 			order by bno DESC, reg_date DESC
+			limit #{rowNum}, #{listSize}
 	</select>
 	
 	<select id="selectList" parameterType="PagingDto" resultType="BoardDto">
-		select bno, title, writer, view_cnt, reg_date
+		select bno, title, writer, view_cnt, comment_cnt, reg_date
 			from board
 			order by bno DESC, reg_date DESC
-			<choose>
-				<when test="pageNum==1">
-					limit 0, #{listSize}
-				</when>
-				<otherwise>
-					limit #{rowNum}, #{listSize}
-				</otherwise>
-			</choose>
 	</select>
 	
 	<select id="select" parameterType="int" resultType="BoardDto">
-		select bno, title, content, writer, view_cnt, reg_date, up_date
+		select bno, title, content, writer, view_cnt, comment_cnt, reg_date, up_date
 			from board
 			where bno = #{bno}
 	</select>

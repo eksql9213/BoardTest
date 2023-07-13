@@ -1,4 +1,4 @@
-package com.test.board;
+package com.test.board.dto;
 
 public class PagingDto {
 	private int pageNum;

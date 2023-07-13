@@ -1,4 +1,4 @@
-package com.test.board;
+package com.test.board.controller;
 
 import java.util.List;
 
@@ -8,12 +8,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.test.board.dto.BoardDto;
+import com.test.board.dto.PagingDto;
+import com.test.board.service.BoardService;
+
 @Controller
 public class BoardController {
 	
 	@Autowired
 	BoardService boardService;
-	BoardDto boardDto;
 	
 	@GetMapping("/")
 	public String board_list(Integer pageNum, Model model) throws Exception {

@@ -1,9 +1,13 @@
-package com.test.board;
+package com.test.board.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.test.board.dao.BoardDao;
+import com.test.board.dto.BoardDto;
+import com.test.board.dto.PagingDto;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -12,14 +16,14 @@ public class BoardServiceImpl implements BoardService {
 	BoardDao boardDao;
 	
 	@Override
-	public List<BoardDto> board_list() throws Exception {
-		return boardDao.selectListAll();
+	public List<BoardDto> board_list(PagingDto pagingDto) throws Exception {
+		pagingDto.setTotalListCnt(boardDao.totalListCnt());
+		return boardDao.selectListAll(pagingDto);
 	}
 
 	@Override
-	public List<BoardDto> board_list(PagingDto pagingDto) throws Exception {
-		pagingDto.setTotalListCnt(boardDao.totalListCnt());
-		return boardDao.selectList(pagingDto);
+	public List<BoardDto> board_list() throws Exception {
+		return boardDao.selectList();
 	}
 
 	@Override

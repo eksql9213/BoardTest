@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.test.board.dao.BoardDao;
+import com.test.board.dto.BoardDto;
+import com.test.board.dto.PagingDto;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 public class BoardDaoImplTest {
@@ -18,12 +22,14 @@ public class BoardDaoImplTest {
 	private BoardDao boardDao;
 	private BoardDto boardDto;
 	private int board_cnt = 200;
+	private PagingDto pagingDto;
 	
-//	@Before
-//	public void setUp() {
-//		boardDao.deleteAll();
-//		boardDto = new BoardDto("test title", "test content", "test writer");
-//	}
+	@Before
+	public void setUp() {
+		boardDao.deleteAll();
+		boardDto = new BoardDto("test title", "test content", "test writer");
+		pagingDto = new PagingDto();
+	}
 
 	@Test
 	public void insertTest() throws Exception {
@@ -33,19 +39,18 @@ public class BoardDaoImplTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void selectAllTest() throws Exception {
 		insertTest();
 		
-		assertTrue(boardDao.selectListAll().size() == board_cnt);
-		assertTrue(boardDao.selectListAll().size() == boardDao.totalListCnt());
+		assertTrue(board_cnt == boardDao.totalListCnt());
 	}
 
-	@Ignore
+	@Test
 	public void selectTest() throws Exception {
 		insertTest();
 		
-		Integer bno = boardDao.selectListAll().get(0).getBno();
+		Integer bno = boardDao.selectListAll(pagingDto).get(0).getBno();
 		boardDto.setBno(bno);
 		
 		System.out.println("boardDto = " + boardDto);
@@ -54,11 +59,11 @@ public class BoardDaoImplTest {
 		assertTrue(boardDao.select(bno).equals(boardDto));
 	}
 
-	@Ignore
+	@Test
 	public void updateTest() throws Exception {
 		insertTest();
 		
-		Integer bno = boardDao.selectListAll().get(0).getBno();
+		Integer bno = boardDao.selectListAll(pagingDto).get(0).getBno();
 		System.out.println("bno:" + bno + " Before update boardDto = " + boardDao.select(bno));
 		
 		boardDto.setBno(bno);
@@ -68,12 +73,12 @@ public class BoardDaoImplTest {
 		System.out.println("bno:" + bno + " After update boardDto = " + boardDao.select(bno));
 	}
 
-	@Ignore
+	@Test
 	public void viewCntTest() throws Exception {
 		insertTest();
 		
 		int board_view =10;
-		Integer bno = boardDao.selectListAll().get(0).getBno();
+		Integer bno = boardDao.selectListAll(pagingDto).get(0).getBno();
 		
 		for(int i=0; i<board_view; i++) {
 			boardDao.viewCnt(bno);
@@ -82,22 +87,22 @@ public class BoardDaoImplTest {
 		assertTrue(boardDao.select(bno).getView_cnt() == board_view);
 	}
 
-	@Ignore
+	@Test
 	public void deleteTest() throws Exception {
 		insertTest();
 		
 		int delete_cnt = 5;
-		Integer bno = boardDao.selectListAll().get(0).getBno();
+		Integer bno = boardDao.selectListAll(pagingDto).get(0).getBno();
 		
 		for(int i=0; i<delete_cnt; i++) {
 			boardDao.delete(bno);
-			bno = boardDao.selectListAll().get(0).getBno();
+			bno = boardDao.selectListAll(pagingDto).get(0).getBno();
 		}
 		
 		assertTrue(boardDao.totalListCnt() == board_cnt-delete_cnt);
 	}
 
-	@Ignore
+	@Test
 	public void deleteAllTest() throws Exception {
 		insertTest();
 		assertTrue(boardDao.deleteAll() == board_cnt);

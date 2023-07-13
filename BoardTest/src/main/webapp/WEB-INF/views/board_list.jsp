@@ -39,6 +39,7 @@
 <body>
 	<h1>게시판 목록</h1>
 	<form method="post" action="/board/boardCRUD" onsubmit="return formCheck(this)">
+		<input type="search" name="keyword"/>
 		<input type="hidden" name="pageNum" value="${pagingDto.pageNum }">
 		<table class="table">
 			<tr>

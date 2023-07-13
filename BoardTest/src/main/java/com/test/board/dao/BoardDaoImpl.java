@@ -1,4 +1,4 @@
-package com.test.board;
+package com.test.board.dao;
 
 import java.util.List;
 
@@ -6,12 +6,15 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.test.board.dto.BoardDto;
+import com.test.board.dto.PagingDto;
+
 @Repository
 public class BoardDaoImpl implements BoardDao {
 	
 	@Autowired
 	SqlSession session;
-	String namespace = "com.test.board.";
+	String namespace = "com.test.board.dao.";
 
 	 @Override
 	public int totalListCnt() throws Exception {
@@ -19,13 +22,13 @@ public class BoardDaoImpl implements BoardDao {
 	 }
 	 
 	 @Override
-	public List<BoardDto> selectListAll() throws Exception {
-		 return session.selectList(namespace + "selectListAll");
+	public List<BoardDto> selectListAll(PagingDto pagingDto) throws Exception {
+		 return session.selectList(namespace + "selectListAll", pagingDto);
 	 }
 
 	 @Override
-	public List<BoardDto> selectList(PagingDto pagingDto) throws Exception {
-		 return session.selectList(namespace + "selectList", pagingDto);
+	public List<BoardDto> selectList() throws Exception {
+		 return session.selectList(namespace + "selectList");
 	 }
 	 
 	 @Override

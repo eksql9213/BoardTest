@@ -1,15 +1,16 @@
-package com.test.board;
+package com.test.board.dto;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class BoardDto {
+public class BoardDto extends PagingDto {
 	
 	private Integer bno;
 	private String title;
 	private String content;
 	private String writer;
 	private int view_cnt;
+	private int comment_cnt;
 	private Date reg_date;
 	private Date up_date;
 
@@ -64,6 +65,12 @@ public class BoardDto {
 	public void setView_cnt(int view_cnt) {
 		this.view_cnt = view_cnt;
 	}
+	public int getComment_cnt() {
+		return comment_cnt;
+	}
+	public void setComment_cnt(int comment_cnt) {
+		this.comment_cnt = comment_cnt;
+	}
 	public Date getReg_date() {
 		return reg_date;
 	}
@@ -93,12 +100,12 @@ public class BoardDto {
 		return Objects.equals(bno, other.bno) && Objects.equals(content, other.content)
 				&& Objects.equals(title, other.title) && Objects.equals(writer, other.writer);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "BoardDto [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer
-				+ ", view_cnt=" + view_cnt + ", reg_date=" + reg_date + ", up_date=" + up_date + "]";
+				+ ", view_cnt=" + view_cnt + ", comment_cnt=" + comment_cnt + ", reg_date=" + reg_date + ", up_date="
+				+ up_date + "]";
 	}
-	
 
 }
