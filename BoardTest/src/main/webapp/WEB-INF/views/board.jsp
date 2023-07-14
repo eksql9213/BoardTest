@@ -42,7 +42,7 @@
 	<h1>게시판 ${mode=="create"? "글쓰기": mode=="read"? "읽기" : "수정"  }</h1>
 	<form method="post" action="/board/boardCRUD" onsubmit="return formCheck(this)">
 		<input type="hidden" name="mode" value="${mode }">
-		<input type="hidden" name="pageNum" value=${mode=="create"? "1": pageNum }>
+		<input type="hidden" name="pageNum" value=${mode=="create"? "1": boardDto.pageNum }>
 		
 		<c:if test="${mode=='create' }">
 			<input type="text" class="form-control" id="title" name="title" placeholder="제목">
@@ -61,9 +61,9 @@
 			<input type="text" class="form-control" id="writer" name="writer" value="${boardDto.writer }" disabled="disabled">
 		
 			<div class="buttons">
-				<input class="btn btn-default" type="button" value="수정" onclick="location.href='/board/boardCRUD?mode=update&bno=${boardDto.bno}&pageNum=${pageNum }'">
-				<input class="btn btn-default" type="button" value="삭제" onclick="location.href='/board/boardCRUD?mode=delete&bno=${boardDto.bno}&pageNum=${pageNum }'">
-				<input class="btn btn-default" type="button" value="목록" onclick="location.href='/board?pageNum=${pageNum }'">
+				<input class="btn btn-default" type="button" value="수정" onclick="location.href='/board/boardCRUD?mode=update&bno=${boardDto.bno}&pageNum=${boardDto.pageNum }'">
+				<input class="btn btn-default" type="button" value="삭제" onclick="location.href='/board/boardCRUD?mode=delete&bno=${boardDto.bno}&pageNum=${boardDto.pageNum }'">
+				<input class="btn btn-default" type="button" value="목록" onclick="location.href='/board?pageNum=${boardDto.pageNum }'">
 			</div>
 		</c:if>
 		<c:if test="${mode=='update' }">
@@ -74,8 +74,8 @@
 		
 			<div class="buttons">
 				<input class="btn btn-default" type="submit" value="완료">
-				<input class="btn btn-default" type="button" value="삭제" onclick="location.href='/board/boardCRUD?mode=delete&bno=${boardDto.bno}&pageNum=${pageNum }'">
-				<input class="btn btn-default" type="button" value="취소" onclick="location.href='/board?pageNum=${pageNum }'">
+				<input class="btn btn-default" type="button" value="삭제" onclick="location.href='/board/boardCRUD?mode=delete&bno=${boardDto.bno}&pageNum=${boardDto.pageNum }'">
+				<input class="btn btn-default" type="button" value="취소" onclick="location.href='/board?pageNum=${boardDto.pageNum }'">
 			</div>
 		</c:if>
 	</form>

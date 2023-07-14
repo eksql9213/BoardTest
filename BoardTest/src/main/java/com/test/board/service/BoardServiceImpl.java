@@ -1,5 +1,6 @@
 package com.test.board.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.test.board.dao.BoardDao;
 import com.test.board.dto.BoardDto;
-import com.test.board.dto.PagingDto;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -16,25 +16,35 @@ public class BoardServiceImpl implements BoardService {
 	BoardDao boardDao;
 	
 	@Override
-	public List<BoardDto> board_list(PagingDto pagingDto) throws Exception {
-		pagingDto.setTotalListCnt(boardDao.totalListCnt());
-		return boardDao.selectListAll(pagingDto);
+	public List<BoardDto> board_list(BoardDto boardDto) throws Exception {
+		List<BoardDto> board_list = new ArrayList<BoardDto>();
+		System.out.println("boardService.board_list()");
+		if(boardDto.getKeyword() == null || boardDto.getKeyword().equals("")) {
+			boardDto.setTotalListCnt(boardDao.totalListCnt());
+			board_list = boardDao.selectListAll(boardDto);
+		}
+		else {
+			System.out.println("boardDao.searchListCnt()");
+			System.out.println(boardDto);
+			boardDto.setTotalListCnt(boardDao.searchListCnt());
+			board_list = boardDao.selectList(boardDto);
+		}
+		
+		return board_list;
 	}
-
-	@Override
-	public List<BoardDto> board_list() throws Exception {
-		return boardDao.selectList();
-	}
-
+	
 	@Override
 	public int board_create(BoardDto boardDto) throws Exception {
 		return boardDao.insert(boardDto);
 	}
 	
 	@Override
-	public BoardDto board_read(String mode, Integer bno) throws Exception {
+	public BoardDto board_read(String mode, BoardDto boardDto) throws Exception {
+		Integer bno = boardDto.getBno();
 		if(mode.equals("read")) boardDao.viewCnt(bno);
-		return boardDao.select(bno);
+		BoardDto readBoard = boardDao.select(bno);
+		readBoard.setPageNum(boardDto.getPageNum());
+		return readBoard;
 	}
 	
 	@Override
@@ -48,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int board_deleteList(Integer[] bno_list) throws Exception {
+	public int board_delete(Integer[] bno_list) throws Exception {
 		int delete_cnt = 0;
 		for(Integer bno : bno_list) {
 			boardDao.delete(bno);

@@ -3,14 +3,15 @@ package com.test.board.dao;
 import java.util.List;
 
 import com.test.board.dto.BoardDto;
-import com.test.board.dto.PagingDto;
 
 public interface BoardDao {
 	int totalListCnt() throws Exception;
-	
-	List<BoardDto> selectListAll(PagingDto pagingDto) throws Exception;
 
-	List<BoardDto> selectList() throws Exception;
+	int searchListCnt() throws Exception;
+	
+	List<BoardDto> selectListAll(BoardDto boardDto) throws Exception;
+
+	List<BoardDto> selectList(BoardDto boardDto) throws Exception;
 	
 	BoardDto select(Integer bno) throws Exception;
 

@@ -8,17 +8,42 @@
 		select count(*) from board
 	</select>
 	
-	<select id="selectListAll" resultType="BoardDto">
+	<select id="searchListCnt" parameterType="BoardDto" resultType="int">
+		select count(*) from board
+			where true
+			<if test="option == 'title'">
+				and title like concat('%', #{keyword}, '%')
+			</if>
+			<if test="option == 'content'">
+				and content like concat('%', #{keyword}, '%')
+			</if>
+			<if test="option == 'writer'">
+				and writer like concat('%', #{keyword}, '%')
+			</if>
+	</select>
+	
+	<select id="selectListAll" parameterType="BoardDto" resultType="BoardDto">
 		select bno, title, writer, view_cnt, comment_cnt, reg_date
 			from board
 			order by bno DESC, reg_date DESC
 			limit #{rowNum}, #{listSize}
 	</select>
 	
-	<select id="selectList" parameterType="PagingDto" resultType="BoardDto">
+	<select id="selectList" parameterType="BoardDto" resultType="BoardDto">
 		select bno, title, writer, view_cnt, comment_cnt, reg_date
 			from board
+			where true
+			<if test="option == 'title'">
+				and title like concat('%', #{keyword}, '%')
+			</if>
+			<if test="option == 'content'">
+				and content like concat('%', #{keyword}, '%')
+			</if>
+			<if test="option == 'writer'">
+				and writer like concat('%', #{keyword}, '%')
+			</if>
 			order by bno DESC, reg_date DESC
+			limit #{rowNum}, #{listSize}
 	</select>
 	
 	<select id="select" parameterType="int" resultType="BoardDto">

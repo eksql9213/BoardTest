@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.test.board.dto.BoardDto;
-import com.test.board.dto.PagingDto;
 import com.test.board.service.BoardService;
 
 @Controller
@@ -19,46 +18,54 @@ public class BoardController {
 	BoardService boardService;
 	
 	@GetMapping("/")
-	public String board_list(Integer pageNum, Model model) throws Exception {
-		System.out.println("!!!!!!!!!!!!!board_list page open!!!!!!!!!!!!!");
+	public String board_list(BoardDto boardDto, Model model) throws Exception {
+		System.out.println("!!!!!!!!!!!!!board_list page " + boardDto.getPageNum() + " open!!!!!!!!!!!!!");
 		
-		if(pageNum == null) pageNum=1;
-		
-		PagingDto pagingDto = new PagingDto(pageNum);
-		List<BoardDto> board_list = boardService.board_list(pagingDto);
+		List<BoardDto> board_list = boardService.board_list(boardDto);
 		
 		model.addAttribute("board_list", board_list);
-		model.addAttribute("pagingDto", pagingDto);
+		model.addAttribute("boardDto", boardDto);
 		return "board_list";
 	}
 	
+	@PostMapping("/search")
+	public String board_list_search(BoardDto boardDto, Model model) throws Exception {
+		System.out.println("!!!!!!!!!!!!!board_list_search page " + boardDto.getPageNum() + " open!!!!!!!!!!!!!");
+		
+		List<BoardDto> board_list = boardService.board_list(boardDto);
+		
+		model.addAttribute("board_list", board_list);
+		model.addAttribute("boardDto", boardDto);
+		return "board_list";
+	}
+
 	@GetMapping("/boardCRUD")
-	public String board_CRUD(String mode, Integer bno, BoardDto boardDto, Integer pageNum, Model model) throws Exception {
+	public String board_CRUD(String mode, BoardDto boardDto, Model model) throws Exception {
 		
 		switch(mode) {
 			case "create" :
+				model.addAttribute("boardDto", boardDto);
 				System.out.println("!!!!!!!!!!!!!board_create page open!!!!!!!!!!!!!");
 				break;
 				
 			case "read" :
 			case "update" :
-				model.addAttribute("boardDto", boardService.board_read(mode, bno));
-				System.out.println("!!!!!!!!!!!!!board bno." + bno + " page open!!!!!!!!!!!!!");
+				model.addAttribute("boardDto", boardService.board_read(mode, boardDto));
+				System.out.println("!!!!!!!!!!!!!board bno." + boardDto.getBno() + " page open!!!!!!!!!!!!!");
 				break;
 			
 			case "delete" :
-				boardService.board_delete(bno);
+				boardService.board_delete(boardDto.getBno());
 				System.out.println("!!!!!!!!!!!!!board_delete done!!!!!!!!!!!!!");
-				return "redirect:/?pageNum="+pageNum;
+				return "redirect:/?pageNum="+boardDto.getPageNum();
 		}
 		
-		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("mode", mode);
 		return "board";
 	}
 	
 	@PostMapping("/boardCRUD")
-	public String board_CRUD_execute(String mode, BoardDto boardDto, Integer[] bno_list, Integer pageNum, Model model) throws Exception {
+	public String board_CRUD(String mode, BoardDto boardDto, Integer[] bno_list, Model model) throws Exception {
 		Integer bno = boardDto.getBno();
 		
 		switch(mode) {
@@ -73,10 +80,10 @@ public class BoardController {
 				break;
 			
 			case "delete" :
-				boardService.board_deleteList(bno_list);
+				boardService.board_delete(bno_list);
 				System.out.println("!!!!!!!!!!!!!board_deleteList done!!!!!!!!!!!!!");
 		}
 
-		return "redirect:/?pageNum="+pageNum;
+		return "redirect:/?pageNum="+boardDto.getPageNum();
 	}
 }

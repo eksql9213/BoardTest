@@ -13,6 +13,8 @@ public class BoardDto extends PagingDto {
 	private int comment_cnt;
 	private Date reg_date;
 	private Date up_date;
+	private String option;
+	private String keyword;
 
 	public BoardDto() {}
 	
@@ -82,8 +84,23 @@ public class BoardDto extends PagingDto {
 	}
 	public void setUp_date(Date up_date) {
 		this.up_date = up_date;
+	}	
+	public String getOption() {
+		return option;
 	}
-	
+
+	public void setOption(String option) {
+		this.option = option;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(bno, content, title, writer);
@@ -105,7 +122,7 @@ public class BoardDto extends PagingDto {
 	public String toString() {
 		return "BoardDto [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer
 				+ ", view_cnt=" + view_cnt + ", comment_cnt=" + comment_cnt + ", reg_date=" + reg_date + ", up_date="
-				+ up_date + "]";
+				+ up_date + ", option=" + option + ", keyword=" + keyword + ", " + super.toString();
 	}
 
 }

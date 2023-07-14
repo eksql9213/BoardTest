@@ -21,19 +21,17 @@ public class BoardDaoImplTest {
 	@Autowired
 	private BoardDao boardDao;
 	private BoardDto boardDto;
-	private int board_cnt = 200;
-	private PagingDto pagingDto;
+	private int board_cnt = 20;
 	
 	@Before
 	public void setUp() {
 		boardDao.deleteAll();
 		boardDto = new BoardDto("test title", "test content", "test writer");
-		pagingDto = new PagingDto();
 	}
 
 	@Test
 	public void insertTest() throws Exception {
-		boardDto = new BoardDto("test title", "test content", "test writer");
+//		boardDto = new BoardDto("zxcv", "zxcv", "zxcv");
 		for(int i=0; i<board_cnt; i++) {
 			assertTrue(boardDao.insert(boardDto) == 1);
 		}
@@ -50,7 +48,7 @@ public class BoardDaoImplTest {
 	public void selectTest() throws Exception {
 		insertTest();
 		
-		Integer bno = boardDao.selectListAll(pagingDto).get(0).getBno();
+		Integer bno = boardDao.selectListAll(boardDto).get(0).getBno();
 		boardDto.setBno(bno);
 		
 		System.out.println("boardDto = " + boardDto);
@@ -63,7 +61,7 @@ public class BoardDaoImplTest {
 	public void updateTest() throws Exception {
 		insertTest();
 		
-		Integer bno = boardDao.selectListAll(pagingDto).get(0).getBno();
+		Integer bno = boardDao.selectListAll(boardDto).get(0).getBno();
 		System.out.println("bno:" + bno + " Before update boardDto = " + boardDao.select(bno));
 		
 		boardDto.setBno(bno);
@@ -78,7 +76,7 @@ public class BoardDaoImplTest {
 		insertTest();
 		
 		int board_view =10;
-		Integer bno = boardDao.selectListAll(pagingDto).get(0).getBno();
+		Integer bno = boardDao.selectListAll(boardDto).get(0).getBno();
 		
 		for(int i=0; i<board_view; i++) {
 			boardDao.viewCnt(bno);
@@ -92,11 +90,11 @@ public class BoardDaoImplTest {
 		insertTest();
 		
 		int delete_cnt = 5;
-		Integer bno = boardDao.selectListAll(pagingDto).get(0).getBno();
+		Integer bno = boardDao.selectListAll(boardDto).get(0).getBno();
 		
 		for(int i=0; i<delete_cnt; i++) {
 			boardDao.delete(bno);
-			bno = boardDao.selectListAll(pagingDto).get(0).getBno();
+			bno = boardDao.selectListAll(boardDto).get(0).getBno();
 		}
 		
 		assertTrue(boardDao.totalListCnt() == board_cnt-delete_cnt);

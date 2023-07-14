@@ -16,6 +16,14 @@
 		text-align: center;
 		margin-top: 50px;
 	}
+	#keywordForm {
+		margin: 30px 0 20px;
+		display: flex;
+		justify-content: center;
+	}
+	#keywordForm > input[type=search] {
+		width: 500px;
+	}
 	.table {
 	    width: max-content;
 	    min-width: 1000px;
@@ -38,9 +46,16 @@
 </head>
 <body>
 	<h1>게시판 목록</h1>
-	<form method="post" action="/board/boardCRUD" onsubmit="return formCheck(this)">
-		<input type="search" name="keyword"/>
-		<input type="hidden" name="pageNum" value="${pagingDto.pageNum }">
+	<form id="keywordForm" method="post" action="/board/search" onsubmit="return keywordCheck(this)">
+		<select class="btn btn-default" name="option">
+			<option value="title">제목</option>
+			<option value="content">내용</option>
+			<option value="writer">작성자</option>
+		</select>
+		<input class="form-control" type="search" name="keyword" placeholder="검색어를 입력하세요." value="${boardDto.keyword }"/><input class="btn btn-default" type="submit" value="검색">
+	</form>
+	<form method="post" action="/board/boardCRUD" onsubmit="return deleteCheck(this)">
+		<input type="hidden" name="pageNum" value="${boardDto.pageNum }">
 		<table class="table">
 			<tr>
 				<td width ="50"><input type="hidden" name="mode" value="delete"></td>
@@ -59,7 +74,10 @@
 				<tr>
 					<td><input type="checkbox" name="bno_list" value=${board.bno }></td>
 					<td>${board.bno }</td>
-					<td><a href="<c:url value='/boardCRUD?mode=read&bno=${board.bno }&pageNum=${pagingDto.pageNum }'/>">${board.title }</a></td>
+					<td>
+						<a href="<c:url value='/boardCRUD?mode=read&bno=${board.bno }&pageNum=${boardDto.pageNum }'/>">${board.title }</a>
+						(<a href="<c:url value='/boardCRUD?mode=read&bno=${board.bno }&pageNum=${boardDto.pageNum }'/>">${board.comment_cnt }</a>)
+					</td>
 					<td>${board.writer }</td>
 					<td>
 						<fmt:formatDate value="${board.reg_date }" pattern="yyyy-MM-dd HH:mm"/>
@@ -70,23 +88,23 @@
 			<tr>
 				<td id="buttons" colspan="6" >
 					<input class="btn btn-default" type="submit" value="선택삭제">
-					<input class="btn btn-default" type="button" value="글쓰기" onclick="location.href='/board/boardCRUD?mode=create&pageNum=${pagingDto.pageNum }'">
+					<input class="btn btn-default" type="button" value="글쓰기" onclick="location.href='/board/boardCRUD?mode=create&pageNum=${boardDto.pageNum }'">
 				</td>
 			</tr>
 		</table>
 	</form>
 	<table id="pageNavi">
 		<tr>
-			<td><a href="<c:url value='/?pageNum=${pagingDto.startPage-1 }'/>">${pagingDto.prev? "&lt;" : ""}</a></td>
-			<c:forEach var="i" begin="${pagingDto.startPage }" end="${pagingDto.endPage }">
+			<td><a href="<c:url value='/?pageNum=${boardDto.startPage-1 }'/>">${boardDto.prev? "&lt;" : ""}</a></td>
+			<c:forEach var="i" begin="${boardDto.startPage }" end="${boardDto.endPage }">
 				<td><a href="<c:url value='/?pageNum=${i }'/>">${i }</a></td>
 			</c:forEach>
-			<td><a href="<c:url value='/?pageNum=${pagingDto.endPage+1 }'/>">${pagingDto.next? "&gt;" : "" }</a></td>
+			<td><a href="<c:url value='/?pageNum=${boardDto.endPage+1 }'/>">${boardDto.next? "&gt;" : "" }</a></td>
 		</tr>
 	</table>
 </body>
-<script type="text/javascript">
-	function formCheck(frm) {
+<script type="text/javascript">	
+	function deleteCheck(frm) {
 		if(document.getElementsByName("bno_list").length != 0){
 			return true;
 		}

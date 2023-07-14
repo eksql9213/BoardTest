@@ -20,15 +20,20 @@ public class BoardDaoImpl implements BoardDao {
 	public int totalListCnt() throws Exception {
 		 return session.selectOne(namespace + "totalListCnt");
 	 }
+
+	 @Override
+	public int searchListCnt() throws Exception {
+		 return session.selectOne(namespace + "searchListCnt");
+	 }
 	 
 	 @Override
-	public List<BoardDto> selectListAll(PagingDto pagingDto) throws Exception {
-		 return session.selectList(namespace + "selectListAll", pagingDto);
+	public List<BoardDto> selectListAll(BoardDto boardDto) throws Exception {
+		 return session.selectList(namespace + "selectListAll", boardDto);
 	 }
 
 	 @Override
-	public List<BoardDto> selectList() throws Exception {
-		 return session.selectList(namespace + "selectList");
+	public List<BoardDto> selectList(BoardDto boardDto) throws Exception {
+		 return session.selectList(namespace + "selectList", boardDto);
 	 }
 	 
 	 @Override
