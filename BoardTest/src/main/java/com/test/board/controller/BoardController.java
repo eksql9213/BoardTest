@@ -33,7 +33,8 @@ public class BoardController {
 		System.out.println("!!!!!!!!!!!!!board_list_search page " + boardDto.getPageNum() + " open!!!!!!!!!!!!!");
 		
 		List<BoardDto> board_list = boardService.board_list(boardDto);
-		
+		System.out.println(board_list);
+		System.out.println(boardDto);
 		model.addAttribute("board_list", board_list);
 		model.addAttribute("boardDto", boardDto);
 		return "board_list";
@@ -57,9 +58,10 @@ public class BoardController {
 			case "delete" :
 				boardService.board_delete(boardDto.getBno());
 				System.out.println("!!!!!!!!!!!!!board_delete done!!!!!!!!!!!!!");
-				return "redirect:/?pageNum="+boardDto.getPageNum();
+				return "redirect:/?pageNum="+boardDto.getPageNum()+"&option="+boardDto.getOption()+"&keyword="+boardDto.getKeyword();
 		}
 		
+		System.out.println(boardDto);
 		model.addAttribute("mode", mode);
 		return "board";
 	}
@@ -84,6 +86,6 @@ public class BoardController {
 				System.out.println("!!!!!!!!!!!!!board_deleteList done!!!!!!!!!!!!!");
 		}
 
-		return "redirect:/?pageNum="+boardDto.getPageNum();
+		return "redirect:/?pageNum="+boardDto.getPageNum()+"&option="+boardDto.getOption()+"&keyword="+boardDto.getKeyword();
 	}
 }

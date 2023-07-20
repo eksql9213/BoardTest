@@ -48,9 +48,9 @@
 	<h1>게시판 목록</h1>
 	<form id="keywordForm" method="post" action="/board/search" onsubmit="return keywordCheck(this)">
 		<select class="btn btn-default" name="option">
-			<option value="title">제목</option>
-			<option value="content">내용</option>
-			<option value="writer">작성자</option>
+			<option value="title" ${boardDto.option == 'title' || boardDto.option == 'title' ? "selected" : "" }>제목</option>
+			<option value="content" ${boardDto.option == 'content' ? "selected" : "" }>내용</option>
+			<option value="writer" ${boardDto.option == 'writer' ? "selected" : "" }>작성자</option>
 		</select>
 		<input class="form-control" type="search" name="keyword" placeholder="검색어를 입력하세요." value="${boardDto.keyword }"/><input class="btn btn-default" type="submit" value="검색">
 	</form>
@@ -75,8 +75,8 @@
 					<td><input type="checkbox" name="bno_list" value=${board.bno }></td>
 					<td>${board.bno }</td>
 					<td>
-						<a href="<c:url value='/boardCRUD?mode=read&bno=${board.bno }&pageNum=${boardDto.pageNum }'/>">${board.title }</a>
-						(<a href="<c:url value='/boardCRUD?mode=read&bno=${board.bno }&pageNum=${boardDto.pageNum }'/>">${board.comment_cnt }</a>)
+						<a href="<c:url value='/boardCRUD?mode=read&bno=${board.bno }&pageNum=${boardDto.pageNum }&option=${boardDto.option }&keyword=${boardDto.keyword }'/>">${board.title }</a>
+						(<a href="<c:url value='/boardCRUD?mode=read&bno=${board.bno }&pageNum=${boardDto.pageNum }&option=${boardDto.option }&keyword=${boardDto.keyword }'/>">${board.comment_cnt }</a>)
 					</td>
 					<td>${board.writer }</td>
 					<td>
@@ -95,11 +95,11 @@
 	</form>
 	<table id="pageNavi">
 		<tr>
-			<td><a href="<c:url value='/?pageNum=${boardDto.startPage-1 }'/>">${boardDto.prev? "&lt;" : ""}</a></td>
+			<td><a href="<c:url value='/?pageNum=${boardDto.startPage-1 }&option=${boardDto.option }&keyword=${boardDto.keyword }'/>">${boardDto.prev? "&lt;" : ""}</a></td>
 			<c:forEach var="i" begin="${boardDto.startPage }" end="${boardDto.endPage }">
-				<td><a href="<c:url value='/?pageNum=${i }'/>">${i }</a></td>
+				<td><a href="<c:url value='/?pageNum=${i }&option=${boardDto.option }&keyword=${boardDto.keyword }'/>">${i }</a></td>
 			</c:forEach>
-			<td><a href="<c:url value='/?pageNum=${boardDto.endPage+1 }'/>">${boardDto.next? "&gt;" : "" }</a></td>
+			<td><a href="<c:url value='/?pageNum=${boardDto.endPage+1 }&option=${boardDto.option }&keyword=${boardDto.keyword }'/>">${boardDto.next? "&gt;" : "" }</a></td>
 		</tr>
 	</table>
 </body>

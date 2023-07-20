@@ -7,7 +7,7 @@ import com.test.board.dto.BoardDto;
 public interface BoardDao {
 	int totalListCnt() throws Exception;
 
-	int searchListCnt() throws Exception;
+	int searchListCnt(BoardDto boardDto) throws Exception;
 	
 	List<BoardDto> selectListAll(BoardDto boardDto) throws Exception;
 

@@ -22,8 +22,8 @@ public class BoardDaoImpl implements BoardDao {
 	 }
 
 	 @Override
-	public int searchListCnt() throws Exception {
-		 return session.selectOne(namespace + "searchListCnt");
+	public int searchListCnt(BoardDto boardDto) throws Exception {
+		 return session.selectOne(namespace + "searchListCnt", boardDto);
 	 }
 	 
 	 @Override

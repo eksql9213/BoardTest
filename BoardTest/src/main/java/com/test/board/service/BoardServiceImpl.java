@@ -18,15 +18,13 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardDto> board_list(BoardDto boardDto) throws Exception {
 		List<BoardDto> board_list = new ArrayList<BoardDto>();
-		System.out.println("boardService.board_list()");
+		
 		if(boardDto.getKeyword() == null || boardDto.getKeyword().equals("")) {
 			boardDto.setTotalListCnt(boardDao.totalListCnt());
 			board_list = boardDao.selectListAll(boardDto);
 		}
 		else {
-			System.out.println("boardDao.searchListCnt()");
-			System.out.println(boardDto);
-			boardDto.setTotalListCnt(boardDao.searchListCnt());
+			boardDto.setTotalListCnt(boardDao.searchListCnt(boardDto));
 			board_list = boardDao.selectList(boardDto);
 		}
 		
@@ -41,9 +39,14 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardDto board_read(String mode, BoardDto boardDto) throws Exception {
 		Integer bno = boardDto.getBno();
+		
 		if(mode.equals("read")) boardDao.viewCnt(bno);
+		
 		BoardDto readBoard = boardDao.select(bno);
 		readBoard.setPageNum(boardDto.getPageNum());
+		readBoard.setOption(boardDto.getOption());
+		readBoard.setKeyword(boardDto.getKeyword());
+		
 		return readBoard;
 	}
 	

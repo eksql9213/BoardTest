@@ -61,9 +61,9 @@
 			<input type="text" class="form-control" id="writer" name="writer" value="${boardDto.writer }" disabled="disabled">
 		
 			<div class="buttons">
-				<input class="btn btn-default" type="button" value="수정" onclick="location.href='/board/boardCRUD?mode=update&bno=${boardDto.bno}&pageNum=${boardDto.pageNum }'">
-				<input class="btn btn-default" type="button" value="삭제" onclick="location.href='/board/boardCRUD?mode=delete&bno=${boardDto.bno}&pageNum=${boardDto.pageNum }'">
-				<input class="btn btn-default" type="button" value="목록" onclick="location.href='/board?pageNum=${boardDto.pageNum }'">
+				<input class="btn btn-default" type="button" value="수정" onclick="location.href='/board/boardCRUD?mode=update&bno=${boardDto.bno}&pageNum=${boardDto.pageNum }&option=${boardDto.option }&keyword=${boardDto.keyword }'">
+				<input class="btn btn-default" type="button" value="삭제" onclick="location.href='/board/boardCRUD?mode=delete&bno=${boardDto.bno}&pageNum=${boardDto.pageNum }&option=${boardDto.option }&keyword=${boardDto.keyword }'">
+				<input class="btn btn-default" type="button" value="목록" onclick="location.href='/board?pageNum=${boardDto.pageNum }&option=${boardDto.option }&keyword=${boardDto.keyword }'">
 			</div>
 		</c:if>
 		<c:if test="${mode=='update' }">
@@ -74,8 +74,8 @@
 		
 			<div class="buttons">
 				<input class="btn btn-default" type="submit" value="완료">
-				<input class="btn btn-default" type="button" value="삭제" onclick="location.href='/board/boardCRUD?mode=delete&bno=${boardDto.bno}&pageNum=${boardDto.pageNum }'">
-				<input class="btn btn-default" type="button" value="취소" onclick="location.href='/board?pageNum=${boardDto.pageNum }'">
+				<input class="btn btn-default" type="button" value="삭제" onclick="location.href='/board/boardCRUD?mode=delete&bno=${boardDto.bno}&pageNum=${boardDto.pageNum }&option=${boardDto.option }&keyword=${boardDto.keyword }'">
+				<input class="btn btn-default" type="button" value="취소" onclick="location.href='/board?pageNum=${boardDto.pageNum }&option=${boardDto.option }&keyword=${boardDto.keyword }'">
 			</div>
 		</c:if>
 	</form>
